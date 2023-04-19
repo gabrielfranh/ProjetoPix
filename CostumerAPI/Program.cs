@@ -1,9 +1,14 @@
 using AutoMapper;
 using CostumerAPI.Configuration;
+using CostumerAPI.Controllers;
 using CostumerAPI.Repositories;
 using CostumerAPI.Repositories.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//Add Console logs
+
+builder.Services.AddSingleton<ILogger>(svc => svc.GetRequiredService<ILogger<ClienteController>>());
 
 // Add services to the container.
 

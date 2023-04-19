@@ -28,7 +28,7 @@ namespace CostumerAPI.Repositories
 
                 dbConnection.Open();
 
-                var result = await dbConnection.QueryFirstAsync<Cliente>(sQuery, new { id });
+                var result = await dbConnection.QueryFirstOrDefaultAsync<Cliente>(sQuery, new { id });
 
                 return _mapper.Map<ClienteDTO>(result);
             }
