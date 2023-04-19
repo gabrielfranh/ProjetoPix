@@ -8,8 +8,8 @@ namespace CostumerAPI.Repositories.Interface
 
         public Task<bool> Create(ClienteDTO cliente);
 
-        public Task<ClienteDTO> Update(ClienteDTO cliente);
+        public Task<bool> Update(ClienteDTO cliente);
 
-        public Task<bool> DeleteCliente(long clienteId);
+        public Task<bool> DeleteClienteById(long clienteId);
     }
 }

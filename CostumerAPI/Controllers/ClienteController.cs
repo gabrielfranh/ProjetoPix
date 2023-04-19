@@ -18,7 +18,8 @@ namespace CostumerAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetClienteById(int id)
         {
-            return Ok();
+            await _clienteRepository.GetClientById(id);
+            return Ok(id);
         }
         
         [HttpPost]
@@ -26,9 +27,9 @@ namespace CostumerAPI.Controllers
         {
             if (cliente == null) return BadRequest();
 
-            var success = _clienteRepository.Create(cliente);
+            var status = await _clienteRepository.Create(cliente);
 
-            return Ok(success);
+            return Ok(status);
         }
 
         [HttpPut]
@@ -36,13 +37,16 @@ namespace CostumerAPI.Controllers
         {
             if (cliente == null) return BadRequest();
 
-            return Ok();
+            var status = await _clienteRepository.Update(cliente);
+
+            return Ok(status);
         }
 
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
-            return Ok();
+            await _clienteRepository.DeleteClienteById(id);
+            return Ok(id);
         }
     }
 }
