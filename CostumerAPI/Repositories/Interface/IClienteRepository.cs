@@ -6,10 +6,10 @@ namespace CostumerAPI.Repositories.Interface
     {
         public Task<ClienteDTO> GetClientById(long id);
 
-        public Task<bool> Create(ClienteDTO cliente);
+        public Task<ClienteDTO> Create(ClienteDTO cliente);
 
-        public Task<bool> Update(ClienteDTO cliente);
+        public Task<ClienteDTO> Update(ClienteDTO cliente);
 
-        public Task<bool> DeleteClienteById(long clienteId);
+        public Task DeleteClienteById(long clienteId);
     }
 }

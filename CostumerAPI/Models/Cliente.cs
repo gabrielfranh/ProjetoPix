@@ -1,12 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace CostumerAPI.Models
+﻿namespace CostumerAPI.Models
 {
     public class Cliente
     {
-        [Required]
-        public long Id { get; set; }
-
+        public int ClienteId { get; set; }
         public string Nome { get; set; }
     }
 }

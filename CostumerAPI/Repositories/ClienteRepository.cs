@@ -28,30 +28,32 @@ namespace CostumerAPI.Repositories
 
                 dbConnection.Open();
 
-                var result = await dbConnection.QueryFirstAsync<ClienteDTO>(sQuery, id);
+                var result = await dbConnection.QueryFirstAsync<Cliente>(sQuery, new { id });
 
-                return result;
+                return _mapper.Map<ClienteDTO>(result);
             }
         }
 
-        public async Task<bool> Create(ClienteDTO cliente)
+        public async Task<ClienteDTO> Create(ClienteDTO cliente)
         {
             var clienteModel = _mapper.Map<Cliente>(cliente);
 
             using (IDbConnection dbConnection = new SqlConnection(_connectionString))
             {
-                string sQuery = @"INSERT INTO Cliente(Id, Nome)
-                                VALUES (@Id, @Nome)";
+                string sQuery = @"INSERT INTO Cliente(Nome)
+                                VALUES (@Nome); SELECT CAST(scope_identity() AS INT)";
 
                 dbConnection.Open();
 
-                var result = await dbConnection.ExecuteAsync(sQuery, clienteModel);
+                var clienteId = await dbConnection.ExecuteScalarAsync<int>(sQuery, clienteModel);
 
-                return result == 1 ? true : false;
+                clienteModel.ClienteId = clienteId;
+
+                return _mapper.Map<ClienteDTO>(clienteModel);
             }
         }
 
-        public async Task<bool> Update(ClienteDTO cliente)
+        public async Task<ClienteDTO> Update(ClienteDTO cliente)
         {
             var clienteModel = _mapper.Map<Cliente>(cliente);
 
@@ -59,27 +61,25 @@ namespace CostumerAPI.Repositories
             {
                 string sQuery = @"UPDATE Cliente 
                                 SET Nome = @Nome 
-                                WHERE Id = @Id";
+                                WHERE ClienteId = @ClienteId";
 
                 dbConnection.Open();
 
-                var result = await dbConnection.ExecuteAsync(sQuery, clienteModel);
+                await dbConnection.ExecuteAsync(sQuery, clienteModel);
 
-                return result == 1 ? true : false;
+                return _mapper.Map<ClienteDTO>(clienteModel);
             }
         }
 
-        public async Task<bool> DeleteClienteById(long clienteId)
+        public async Task DeleteClienteById(long clienteId)
         {
             using (IDbConnection dbConnection = new SqlConnection(_connectionString))
             {
                 string sQuery = @"DELETE FROM Cliente 
-                                WHERE Id = @clienteId";
+                                WHERE ClienteId = @clienteId";
                 dbConnection.Open();
 
-                var result = await dbConnection.ExecuteAsync(sQuery, clienteId);
-
-                return result == 1 ? true : false;
+                var result = await dbConnection.ExecuteAsync(sQuery, new { clienteId });
             }
         }
     }

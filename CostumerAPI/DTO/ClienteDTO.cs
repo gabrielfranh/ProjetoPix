@@ -2,8 +2,7 @@
 {
     public class ClienteDTO
     {
-        public long Id { get; set; }
-
+        public int ClienteId { get; set; }
         public string Nome { get; set; }
     }
 }
