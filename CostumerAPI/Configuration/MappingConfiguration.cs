@@ -10,7 +10,7 @@ namespace CostumerAPI.Configuration
         {
             var mappingConfig = new MapperConfiguration(config =>
             {
-                config.CreateMap<ClienteDTO, Cliente>().ReverseMap();
+                config.CreateMap<CostumerDTO, Costumer>().ReverseMap();
             });
             return mappingConfig;
         }

@@ -1,14 +1,11 @@
 using AutoMapper;
 using CostumerAPI.Configuration;
-using CostumerAPI.Controllers;
 using CostumerAPI.Repositories;
 using CostumerAPI.Repositories.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//Add Console logs
-
-builder.Services.AddSingleton<ILogger>(svc => svc.GetRequiredService<ILogger<ClienteController>>());
+builder.Logging.AddConsole();
 
 // Add services to the container.
 
@@ -19,8 +16,9 @@ builder.Services.AddSwaggerGen();
 
 // Dependency Injection
 
-builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
+builder.Services.AddScoped<ICostumerRepository, CostumerRepository>();
 
+// Mapper
 IMapper mapper = MappingConfiguration.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
 
