@@ -2,6 +2,10 @@
 using KeyAPI.Repositories.Interfaces;
 using KeyAPI.DTO;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
+using System.Data.SqlClient;
+using Dapper;
+using KeyAPI.Models;
 
 namespace KeyAPI.Repositories
 {
@@ -18,27 +22,79 @@ namespace KeyAPI.Repositories
 
         public async Task<List<KeyDTO>> GetAllKeysByCostumer(int costumerId)
         {
-            throw new NotImplementedException();
+            using (IDbConnection dbConnection = new SqlConnection(_connectionString))
+            {
+                string sQuery = @"SELECT * FROM PixKey WHERE CostumerId = @costumerId";
+
+                dbConnection.Open();
+
+                var keys = await dbConnection.QueryAsync<List<Key>>(sQuery, new { costumerId });
+
+                return _mapper.Map<List<KeyDTO>>(keys);
+            }
         }
 
         public async Task<KeyDTO> GetKeyByCostumer(int keyId, int costumerId)
         {
-            throw new NotImplementedException();
+            using (IDbConnection dbConnection = new SqlConnection(_connectionString))
+            {
+                string sQuery = @"SELECT TOP 1 * FROM PixKey WHERE CostumerId = @costumerId and Id = @keyId";
+
+                dbConnection.Open();
+
+                var keys = await dbConnection.QueryAsync<List<Key>>(sQuery, new { costumerId, keyId });
+
+                return _mapper.Map<KeyDTO>(keys);
+            }
         }
 
-        public Task<IActionResult> Create([FromBody] KeyDTO key)
+        public async Task<KeyDTO> Create([FromBody] KeyDTO key)
         {
-            throw new NotImplementedException();
+            var keyModel = _mapper.Map<Key>(key);
+
+            using (IDbConnection dbConnection = new SqlConnection(_connectionString))
+            {
+                string sQuery = @"INSERT INTO PixKey(CreationDate, Type, KeyNumber, CostumerId)
+                                VALUES (@CreationDate, @Type, @KeyNumber, @CostumerId); SELECT CAST(scope_identity() AS INT)";
+
+                dbConnection.Open();
+
+                var Id = await dbConnection.ExecuteScalarAsync<int>(sQuery, keyModel);
+
+                keyModel.Id = Id;
+
+                return _mapper.Map<KeyDTO>(keyModel);
+            }
         }
 
-        public Task<IActionResult> Update([FromBody] KeyDTO key)
+        public async Task<KeyDTO> Update([FromBody] KeyDTO key)
         {
-            throw new NotImplementedException();
+            var keyModel = _mapper.Map<Key>(key);
+
+            using (IDbConnection dbConnection = new SqlConnection(_connectionString))
+            {
+                string sQuery = @"UPDATE PixKey SET CreationDate = @CreationDate, Type = @Type, KeyNumber = @KeyNumber, CostumerId = @CostumerId WHERE Id = @id";
+
+                dbConnection.Open();
+
+                var Id = await dbConnection.ExecuteScalarAsync<int>(sQuery, keyModel);
+
+                keyModel.Id = Id;
+
+                return _mapper.Map<KeyDTO>(keyModel);
+            }
         }
 
-        public Task<IActionResult> Delete(int keyId, int costumerId)
+        public async Task Delete(int keyId, int costumerId)
         {
-            throw new NotImplementedException();
+            using (IDbConnection dbConnection = new SqlConnection(_connectionString))
+            {
+                string sQuery = @"DELETE FROM PixKey 
+                                WHERE Id = @Id and CostumerId = @CostumerId";
+                dbConnection.Open();
+
+                var result = await dbConnection.ExecuteAsync(sQuery, new { keyId, costumerId });
+            }
         }
     }
 }
