@@ -1,6 +1,6 @@
-using KeyAPI.Repositories.Interfaces;
 using KeyAPI.DTO;
 using Microsoft.AspNetCore.Mvc;
+using KeyAPI.Services.Interfaces;
 
 namespace KeyAPI.Controllers
 {
@@ -9,11 +9,11 @@ namespace KeyAPI.Controllers
     public class KeyController : ControllerBase
     {
         private readonly ILogger<KeyController> _logger;
-        private readonly IKeyRepository _keyRepository;
+        private readonly IKeyService _keyService;
 
-        public KeyController(IKeyRepository keyRepository, ILogger<KeyController> logger)
+        public KeyController(IKeyService keyService, ILogger<KeyController> logger)
         {
-            _keyRepository = keyRepository;
+            _keyService = keyService;
             _logger = logger;
         }
 
@@ -22,7 +22,7 @@ namespace KeyAPI.Controllers
         {
             try
             {
-                var keys = await _keyRepository.GetAllKeysByCostumer(costumerId);
+                var keys = await _keyService.GetAllKeysByCostumer(costumerId);
 
                 if (keys == null || keys.Any())
                     return NotFound();
@@ -37,12 +37,12 @@ namespace KeyAPI.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("id")]
         public async Task<IActionResult> GetKeyByCostumer(int keyId, int costumerId)
         {
             try
             {
-                var key = await _keyRepository.GetKeyByCostumer(keyId, costumerId);
+                var key = await _keyService.GetKeyByCostumer(keyId, costumerId);
 
                 if (key == null)
                     return NotFound();
@@ -64,7 +64,7 @@ namespace KeyAPI.Controllers
 
             try
             {
-                var createdKey = await _keyRepository.Create(key);
+                var createdKey = await _keyService.Create(key);
 
                 _logger.LogInformation($"Key {key.KeyNumber} was created.");
 
@@ -85,7 +85,7 @@ namespace KeyAPI.Controllers
 
             try
             {
-                var createdKey = await _keyRepository.Update(key);
+                var createdKey = await _keyService.Update(key);
 
                 _logger.LogInformation($"Key {key.KeyNumber} was updated.");
 
@@ -103,11 +103,11 @@ namespace KeyAPI.Controllers
         {
             try
             {
-                var key = await _keyRepository.GetKeyByCostumer(keyId, costumerId);
+                var key = await _keyService.GetKeyByCostumer(keyId, costumerId);
 
                 if (key == null) return NotFound();
 
-                await _keyRepository.Delete(keyId, costumerId);
+                await _keyService.Delete(keyId, costumerId);
 
                 _logger.LogInformation($"Key {keyId} was deleted.");
 

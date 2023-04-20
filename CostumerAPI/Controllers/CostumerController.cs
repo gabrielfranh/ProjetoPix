@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CostumerAPI.Controllers
 {
     [ApiController]
-    [Route("api/v1/")]
+    [Route("api/v1/[controller]")]
     public class CostumerController : ControllerBase
     {
         private readonly ICostumerRepository _costumerRepository;
@@ -25,7 +25,7 @@ namespace CostumerAPI.Controllers
                 var costumer = await _costumerRepository.GetCostumerById(id);
 
                 if (costumer == null)
-                    return NotFound();
+                    return NotFound("Costumer not found");
 
                 return Ok(costumer);
             }

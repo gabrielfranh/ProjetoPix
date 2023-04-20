@@ -18,6 +18,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IKeyService, KeyService>();
 builder.Services.AddScoped<IKeyRepository, KeyRepository>();
 
+builder.Services.AddHttpClient<IKeyService, KeyService>(c =>
+    c.BaseAddress = new Uri(builder.Configuration["ServiceUrls:CostumerApi"])
+    );
+
 // Mapper
 IMapper mapper = MappingConfiguration.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
