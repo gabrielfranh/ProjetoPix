@@ -22,16 +22,9 @@ namespace KeyAPI.Services
 
         public async Task<List<KeyDTO>> GetAllKeysByCostumer(int costumerId)
         {
-            _logger.LogInformation($"Calling CostumerAPI GetCostumerById {costumerId}");
-            var result = await _httpClient.GetAsync(BasePath + $"?id={costumerId}");
+            var existsCostumer = await ExistsCostumer(costumerId);
 
-            var costumer = await HttpClientExtensions.ReadContentAs<CostumerDTO>(result, _logger);
-
-            if (costumer == null) 
-            {
-                _logger.LogError($"Failed to find costumer with id {costumerId}");
-                return new List<KeyDTO>();
-            }
+            if (!existsCostumer) return new List<KeyDTO>();
 
             var keys = await _keyRepository.GetAllKeysByCostumer(costumerId);
 
@@ -40,7 +33,9 @@ namespace KeyAPI.Services
 
         public async Task<KeyDTO> GetKeyByCostumer(int keyId, int costumerId)
         {
-            //var costumer = await GetCostumerById(costumerId);
+            var existsCostumer = await ExistsCostumer(costumerId);
+
+            if (!existsCostumer) return new KeyDTO();
 
             var key = await _keyRepository.GetKeyByCostumer(keyId, costumerId);
 
@@ -49,32 +44,40 @@ namespace KeyAPI.Services
 
         public async Task<KeyDTO> Create(KeyDTO key)
         {
-            //var costumer = await GetCostumerById(key.CostumerId);
+            var existsCostumer = await ExistsCostumer(key.CostumerId);
+
+            if (!existsCostumer) return new KeyDTO();
 
             var createdKey = await _keyRepository.Create(key);
 
             return createdKey;
         }
 
-        public async Task<KeyDTO> Update([FromBody] KeyDTO key)
+        public async Task<bool> Delete(int keyId, int costumerId)
         {
-            //var costumer = await GetCostumerById(key.CostumerId);
+            var existsCostumer = await ExistsCostumer(costumerId);
 
-            var updatedKey = await _keyRepository.Update(key);
-
-            return updatedKey;
-        }
-
-        public async Task Delete(int keyId, int costumerId)
-        {
-            //var costumer = await GetCostumerById(costumerId);
+            if (!existsCostumer) return false;
 
             await _keyRepository.Delete(keyId, costumerId);
+
+            return true;
         }
 
-        private async Task<CostumerDTO?> GetCostumerById(int costumerId)
+        private async Task<bool> ExistsCostumer(int costumerId)
         {
-            return null;
+            _logger.LogInformation($"Calling CostumerAPI GetCostumerById {costumerId}");
+            var result = await _httpClient.GetAsync(BasePath + $"?id={costumerId}");
+
+            var costumer = await HttpClientExtensions.ReadContentAs<CostumerDTO>(result, _logger);
+
+            if (costumer == null)
+            {
+                _logger.LogError($"Failed to find costumer with id {costumerId}");
+                return false;
+            }
+
+            return true;
         }
     }
 }

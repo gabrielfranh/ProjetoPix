@@ -78,26 +78,6 @@ namespace KeyAPI.Controllers
 
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Update([FromBody] KeyDTO key)
-        {
-            if (key == null) return BadRequest();
-
-            try
-            {
-                var createdKey = await _keyService.Update(key);
-
-                _logger.LogInformation($"Key {key.KeyNumber} was updated.");
-
-                return Ok(createdKey);
-            }
-            catch (Exception)
-            {
-                _logger.LogError($"Failed to update key: {key}");
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
-        }
-
         [HttpDelete]
         public async Task<IActionResult> Delete(int keyId, int costumerId)
         {

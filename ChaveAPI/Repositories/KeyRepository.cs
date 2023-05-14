@@ -67,24 +67,6 @@ namespace KeyAPI.Repositories
             }
         }
 
-        public async Task<KeyDTO> Update([FromBody] KeyDTO key)
-        {
-            var keyModel = _mapper.Map<Key>(key);
-
-            using (IDbConnection dbConnection = new SqlConnection(_connectionString))
-            {
-                string sQuery = @"UPDATE PixKey SET CreationDate = @CreationDate, Type = @Type, KeyNumber = @KeyNumber, CostumerId = @CostumerId WHERE Id = @id";
-
-                dbConnection.Open();
-
-                var Id = await dbConnection.ExecuteScalarAsync<int>(sQuery, keyModel);
-
-                keyModel.Id = Id;
-
-                return _mapper.Map<KeyDTO>(keyModel);
-            }
-        }
-
         public async Task Delete(int keyId, int costumerId)
         {
             using (IDbConnection dbConnection = new SqlConnection(_connectionString))

@@ -11,8 +11,6 @@ namespace KeyAPI.Repositories.Interfaces
 
         public Task<KeyDTO> Create([FromBody] KeyDTO key);
 
-        public Task<KeyDTO> Update([FromBody] KeyDTO key);
-
         public Task Delete(int keyId, int costumerId);
     }
 }
