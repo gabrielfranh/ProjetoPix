@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "8uGbxg9VU7E46Y7UyDrNnrUxab6cOOpBMcSA8VNWOghpbQei6oHTXDnA656TWej+Zpqfr3/4pFNnFBVEYL/HsA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\gabri\\source\\repos\\PixAPI\\RabbitMQService\\RabbitMQService.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\gabri\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\7.0.0\\microsoft.extensions.dependencyinjection.7.0.0.nupkg.sha512",
+    "C:\\Users\\gabri\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\7.0.0\\microsoft.extensions.dependencyinjection.abstractions.7.0.0.nupkg.sha512",
+    "C:\\Users\\gabri\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
+    "C:\\Users\\gabri\\.nuget\\packages\\rabbitmq\\3.6.2\\rabbitmq.3.6.2.nupkg.sha512",
+    "C:\\Users\\gabri\\.nuget\\packages\\rabbitmq.client\\6.5.0\\rabbitmq.client.6.5.0.nupkg.sha512",
+    "C:\\Users\\gabri\\.nuget\\packages\\system.memory\\4.5.5\\system.memory.4.5.5.nupkg.sha512",
+    "C:\\Users\\gabri\\.nuget\\packages\\system.threading.channels\\7.0.0\\system.threading.channels.7.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

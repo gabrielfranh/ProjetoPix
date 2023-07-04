@@ -40,16 +40,14 @@ namespace CostumerAPI.Repositories
 
             using (IDbConnection dbConnection = new SqlConnection(_connectionString))
             {
-                string sQuery = @"INSERT INTO Costumer(Name)
-                                VALUES (@Name); SELECT CAST(scope_identity() AS INT)";
+                string sQuery = @"INSERT INTO Costumer(Name, PasswordHash, Username, Role)
+                                VALUES (@Name, @PasswordHash, @Username, @Role); SELECT CAST(scope_identity() AS INT)";
 
                 dbConnection.Open();
 
                 var Id = await dbConnection.ExecuteScalarAsync<int>(sQuery, costumerModel);
 
-                costumerModel.Id = Id;
-
-                return _mapper.Map<CostumerDTO>(costumerModel);
+                return costumer;
             }
         }
 

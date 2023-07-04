@@ -1,5 +1,5 @@
 ﻿using CostumerAPI.DTO;
-using CostumerAPI.Repositories.Interface;
+using CostumerAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CostumerAPI.Controllers
@@ -8,12 +8,12 @@ namespace CostumerAPI.Controllers
     [Route("api/v1/[controller]")]
     public class CostumerController : ControllerBase
     {
-        private readonly ICostumerRepository _costumerRepository;
+        private readonly ICostumerService _costumerService;
         private readonly ILogger<CostumerController> _logger;
 
-        public CostumerController(ICostumerRepository costumerRepository, ILogger<CostumerController> logger)
+        public CostumerController(ICostumerService costumerService, ILogger<CostumerController> logger)
         {
-            _costumerRepository = costumerRepository;
+            _costumerService = costumerService;
             _logger = logger;
         }
 
@@ -22,8 +22,8 @@ namespace CostumerAPI.Controllers
         {
             try
             {
-                var costumer = await _costumerRepository.GetCostumerById(id);
-
+                var costumer = await _costumerService.GetCostumerById(id);
+                
                 if (costumer == null)
                     return NotFound("Costumer not found");
 
@@ -44,7 +44,7 @@ namespace CostumerAPI.Controllers
 
             try
             {
-                var createdCostumer = await _costumerRepository.Create(costumer);
+                var createdCostumer = await _costumerService.Create(costumer);
 
                 _logger.LogInformation($"Costumer {costumer.Name} was created.");
 
@@ -64,12 +64,12 @@ namespace CostumerAPI.Controllers
             {
                 if (costumer == null) return BadRequest();
 
-                var costumerProcurado = await _costumerRepository.GetCostumerById(costumer.Id);
+                var costumerProcurado = await _costumerService.GetCostumerById(costumer.Id);
 
                 if (costumerProcurado == null)
                     return NotFound();
 
-                var costumerAtualizado = await _costumerRepository.Update(costumer);
+                var costumerAtualizado = await _costumerService.Update(costumer);
 
                 _logger.LogInformation($"Costumer {costumer.Name} with Id {costumer.Id} was updated.");
 
@@ -87,12 +87,12 @@ namespace CostumerAPI.Controllers
         {
             try
             {
-                var costumer = await _costumerRepository.GetCostumerById(id);
+                var costumer = await _costumerService.GetCostumerById(id);
 
                 if (costumer == null)
                     return NotFound();
 
-                await _costumerRepository.DeleteCostumerById(id);
+                await _costumerService.DeleteCostumerById(id);
 
                 _logger.LogInformation($"Costumer {costumer.Name} with Id {costumer.Id} was deleted.");
 

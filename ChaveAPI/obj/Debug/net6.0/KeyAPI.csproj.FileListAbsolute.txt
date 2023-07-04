@@ -38,3 +38,11 @@ C:\Users\gabri\source\repos\PixAPI\ChaveAPI\obj\Debug\net6.0\refint\KeyAPI.dll
 C:\Users\gabri\source\repos\PixAPI\ChaveAPI\obj\Debug\net6.0\KeyAPI.pdb
 C:\Users\gabri\source\repos\PixAPI\ChaveAPI\obj\Debug\net6.0\KeyAPI.genruntimeconfig.cache
 C:\Users\gabri\source\repos\PixAPI\ChaveAPI\obj\Debug\net6.0\ref\KeyAPI.dll
+C:\Users\gabri\source\repos\PixAPI\ChaveAPI\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\gabri\source\repos\PixAPI\ChaveAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\gabri\source\repos\PixAPI\ChaveAPI\bin\Debug\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\gabri\source\repos\PixAPI\ChaveAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\gabri\source\repos\PixAPI\ChaveAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\gabri\source\repos\PixAPI\ChaveAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\gabri\source\repos\PixAPI\ChaveAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\gabri\source\repos\PixAPI\ChaveAPI\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll

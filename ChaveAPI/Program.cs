@@ -4,6 +4,10 @@ using KeyAPI.Repositories;
 using KeyAPI.Repositories.Interfaces;
 using KeyAPI.Services;
 using KeyAPI.Services.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using static Dapper.SqlMapper;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +26,25 @@ builder.Services.AddHttpClient<IKeyService, KeyService>(c =>
     c.BaseAddress = new Uri(builder.Configuration["ServiceUrls:CostumerApi"])
     );
 
+var key = Encoding.ASCII.GetBytes(builder.Configuration.GetValue<string>("Secret"));
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(x =>
+{
+    x.RequireHttpsMetadata = false;
+    x.SaveToken = true;
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+});
+
 // Mapper
 IMapper mapper = MappingConfiguration.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
@@ -36,6 +59,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

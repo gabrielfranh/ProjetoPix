@@ -3,6 +3,11 @@ using KeyAPI.Repositories.Interfaces;
 using KeyAPI.Services.Interfaces;
 using KeyAPI.Useful;
 using Microsoft.AspNetCore.Mvc;
+using static Dapper.SqlMapper;
+using System.Security.Claims;
+using System.Text;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
 
 namespace KeyAPI.Services
 {
